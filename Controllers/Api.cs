@@ -25,6 +25,7 @@ namespace WebApiRedirector.Controllers
 
             if (uqCode == "google") return Redirect("https://google.com");
             if (uqCode == "samsung") return Redirect("https://samsung.com");
+            if (uqCode == "amazon") return Redirect("https://amazon.com");
             if (uqCode == "ebay") return Redirect("https://ebay.com");
 
             return (StatusCode(404));

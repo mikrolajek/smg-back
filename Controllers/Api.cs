@@ -18,18 +18,25 @@ namespace WebApiRedirector.Controllers
             _context = context;
         }
 
-        [HttpGet("{type?}/{uqCode?}")]
-        public IActionResult Get(string type, string uqCode)
+        // [HttpGet("{type?}/{uqCode?}")]
+        [HttpGet("{uqCode?}")]
+        public IActionResult Get(string uqCode)
         {
-            Console.WriteLine(uqCode);
 
-            Branch ctxBranch;
-            using (_context)
-            {
-                ctxBranch = _context.Branches.FirstOrDefault(b => b.GuidLink == uqCode);
-            }
+            if (uqCode == "google") return Redirect("https://google.com");
+            if (uqCode == "samsung") return Redirect("https://samsung.com");
+            if (uqCode == "ebay") return Redirect("https://ebay.com");
 
-            return Redirect($@"https://www.allegro.pl/");
+            return (StatusCode(404));
+            // Console.WriteLine(uqCode);
+
+            // Branch ctxBranch;
+            // using (_context)
+            // {
+            //     ctxBranch = _context.Branches.FirstOrDefault(b => b.GuidLink == uqCode);
+            // }
+
+            // return Redirect($@"https://www.allegro.pl/");
             // return new ContentResult
             // {
 

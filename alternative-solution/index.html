@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang='pl'>
+
+<head>
+    <meta charset='UTF-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+    <style>
+        .container {
+            background-color: aqua;
+            width: 100%;
+            height: 100%;
+            align-content: center;
+        }
+    </style>
+    <title>Trwa przekierowanie...</title>
+</head>
+
+<body>
+    <div class='container'>
+        <span>Zaraz zostaniesz przekierowany na: </span> <span id='link'></span>
+    </div>
+</body>
+<script>
+    const link = `http://stackoverflow.com`;
+    const linkElement = document.getElementById(`link`);
+    linkElement.innerHTML = link;
+    setTimeout(() => {
+        window.location.replace(link);
+    }, 3000);
+
+</script>
+
+</html>

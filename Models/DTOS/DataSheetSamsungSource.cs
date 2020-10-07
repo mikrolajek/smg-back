@@ -2,7 +2,9 @@ namespace WebApiRedirector.Controllers
 {
     public class DataSheetSamsungSource
     {
-        public string Adres { get; set; }
+        public string Location { get; set; }
         public string Siec { get; set; }
+        public string Link { get; set; }
+        public string Product { get; set; }
     }
 }

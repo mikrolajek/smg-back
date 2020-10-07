@@ -1,0 +1,200 @@
+- table:
+    schema: public
+    name: code
+  array_relationships:
+  - name: groups
+    using:
+      foreign_key_constraint_on:
+        column: id_code
+        table:
+          schema: public
+          name: group
+  insert_permissions:
+  - role: manager
+    permission:
+      check:
+        _or:
+        - type:
+            _eq: qr
+        - type:
+            _eq: nfc
+      columns: []
+      backend_only: false
+  select_permissions:
+  - role: manager
+    permission:
+      columns:
+      - id
+      - type
+      - uid
+      filter: {}
+      allow_aggregations: true
+  update_permissions:
+  - role: manager
+    permission:
+      columns:
+      - id
+      - type
+      - uid
+      filter:
+        _or:
+        - type:
+            _eq: qr
+        - type:
+            _eq: nfc
+      check: {}
+  delete_permissions:
+  - role: manager
+    permission:
+      filter: {}
+- table:
+    schema: public
+    name: company
+  array_relationships:
+  - name: branches
+    using:
+      foreign_key_constraint_on:
+        column: id_company
+        table:
+          schema: public
+          name: location
+  insert_permissions:
+  - role: manager
+    permission:
+      check: {}
+      columns:
+      - id
+      - name
+      backend_only: false
+  select_permissions:
+  - role: manager
+    permission:
+      columns:
+      - id
+      - name
+      filter: {}
+      allow_aggregations: true
+  update_permissions:
+  - role: manager
+    permission:
+      columns:
+      - id
+      - name
+      filter: {}
+      check: {}
+  delete_permissions:
+  - role: manager
+    permission:
+      filter: {}
+- table:
+    schema: public
+    name: group
+  object_relationships:
+  - name: code
+    using:
+      foreign_key_constraint_on: id_code
+  - name: link
+    using:
+      foreign_key_constraint_on: id_link
+  - name: location
+    using:
+      foreign_key_constraint_on: id_location
+  - name: product
+    using:
+      foreign_key_constraint_on: id_product
+- table:
+    schema: public
+    name: link
+  array_relationships:
+  - name: groups
+    using:
+      foreign_key_constraint_on:
+        column: id_link
+        table:
+          schema: public
+          name: group
+- table:
+    schema: public
+    name: location
+  object_relationships:
+  - name: company
+    using:
+      foreign_key_constraint_on: id_company
+  array_relationships:
+  - name: groups
+    using:
+      foreign_key_constraint_on:
+        column: id_location
+        table:
+          schema: public
+          name: group
+  insert_permissions:
+  - role: manager
+    permission:
+      check: {}
+      columns:
+      - id
+      - id_company
+      - address
+      backend_only: false
+  select_permissions:
+  - role: manager
+    permission:
+      columns:
+      - id
+      - id_company
+      - address
+      filter: {}
+      allow_aggregations: true
+  update_permissions:
+  - role: manager
+    permission:
+      columns:
+      - id
+      - id_company
+      - address
+      filter: {}
+      check: {}
+  delete_permissions:
+  - role: manager
+    permission:
+      filter: {}
+- table:
+    schema: public
+    name: product
+  array_relationships:
+  - name: groups
+    using:
+      foreign_key_constraint_on:
+        column: id_product
+        table:
+          schema: public
+          name: group
+  insert_permissions:
+  - role: manager
+    permission:
+      check: {}
+      columns:
+      - id
+      - name
+      backend_only: false
+  select_permissions:
+  - role: manager
+    permission:
+      columns:
+      - id
+      - name
+      filter: {}
+      allow_aggregations: true
+  update_permissions:
+  - role: manager
+    permission:
+      columns:
+      - id
+      - name
+      filter: {}
+      check: {}
+  delete_permissions:
+  - role: manager
+    permission:
+      filter: {}

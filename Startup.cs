@@ -11,6 +11,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using WebApiRedirector.Persistance;
+using Microsoft.AspNetCore.Mvc.NewtonsoftJson;
 
 namespace WebApiRedirector
 {
@@ -32,10 +34,12 @@ namespace WebApiRedirector
             if (_env.IsDevelopment())
             {
                 Console.WriteLine($"Haha! To ja! {_env.EnvironmentName}!");
+                services.AddDbContext<postgresContext>(options =>
+                        options.UseNpgsql(Configuration.GetConnectionString("DevContext")));
             }
-            services.AddControllers();
-            services.AddDbContext<ApplicationDbContext>(options =>
-        options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddControllers().AddNewtonsoftJson();
+            //     services.AddDbContext<ApplicationDbContext>(options =>
+            // options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

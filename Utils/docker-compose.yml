@@ -1,0 +1,57 @@
+version: "3.8"
+services:
+  backend:
+    image: mcr.microsoft.com/dotnet/core/sdk
+    restart: always
+    depends_on:
+      - graphql-engine
+      - postgres
+    ports:
+      - 5001:5001
+      - 5000:5000
+    working_dir: /app-dev
+    volumes:
+      - ../.:/app-dev
+    command: ["dotnet", "watch", "run", "--urls", "https://0.0.0.0:5000"]
+  postgres:
+    image: postgres:12
+    restart: always
+    volumes:
+      - db_data_dev:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: postgrespassword
+  pgadmin:
+    image: dpage/pgadmin4
+    restart: always
+    depends_on:
+      - postgres
+    ports:
+      - 5059:80
+    volumes:
+      - db_pgadmin_dev:/var/lib/pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: pgadmin@example.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+  graphql-engine:
+    image: hasura/graphql-engine:v1.3.2.cli-migrations-v2
+    ports:
+      - 8080:8080
+    volumes:
+      - ./hasura-dev-dane/migrations:/hasura-migrations
+      - ./hasura-dev-dane/metadata:/hasura-metadata
+    depends_on:
+      - "postgres"
+    restart: always
+    environment:
+      HASURA_GRAPHQL_DATABASE_URL: postgres://postgres:postgrespassword@postgres:5432/postgres
+      ## enable the console served by server
+      HASURA_GRAPHQL_ENABLE_CONSOLE: "true" # set to "false" to disable console
+      ## enable debugging mode. It is recommended to disable this in production
+      HASURA_GRAPHQL_DEV_MODE: "true"
+      ## uncomment next line to set an admin secret
+      HASURA_GRAPHQL_ADMIN_SECRET: SavGroup9711HasuraSecretPasswordString_iujMcjwscHem3
+      HASURA_GRAPHQL_JWT_SECRET: '{"type": "HS256","key": "2bc5f1234c2e063b4a1a4e4b21a01ab9b0b608833cca2f47f82451eb6b1d542d"}'
+volumes:
+  db_pgadmin_dev:
+  db_data_dev:
+    #sha256 marcintoja

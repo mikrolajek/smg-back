@@ -38,6 +38,12 @@ namespace WebApiRedirector
                 services.AddDbContext<postgresContext>(options =>
                         options.UseNpgsql(Configuration.GetConnectionString("DevContext")));
             }
+
+            if (_env.IsProduction())
+            {
+                services.AddDbContext<postgresContext>(options =>
+                        options.UseNpgsql(Configuration.GetConnectionString("ProdContext")));
+            };
             services.AddControllers().AddNewtonsoftJson();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             //     services.AddDbContext<ApplicationDbContext>(options =>

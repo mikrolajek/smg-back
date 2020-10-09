@@ -21,6 +21,7 @@ namespace WebApiRedirector.Persistance
         public virtual DbSet<Group> Group { get; set; }
         public virtual DbSet<Link> Link { get; set; }
         public virtual DbSet<Location> Location { get; set; }
+        public virtual DbSet<PairTracker> PairTracker { get; set; }
         public virtual DbSet<PgBuffercache> PgBuffercache { get; set; }
         public virtual DbSet<PgStatStatements> PgStatStatements { get; set; }
         public virtual DbSet<Product> Product { get; set; }
@@ -69,6 +70,11 @@ namespace WebApiRedirector.Persistance
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("group_id_location_fkey");
 
+                entity.HasOne(d => d.IdPairTrackerNavigation)
+                    .WithMany(p => p.Group)
+                    .HasForeignKey(d => d.IdPairTracker)
+                    .HasConstraintName("group_id_pair_tracker_fkey");
+
                 entity.HasOne(d => d.IdProductNavigation)
                     .WithMany(p => p.Group)
                     .HasForeignKey(d => d.IdProduct)
@@ -90,6 +96,21 @@ namespace WebApiRedirector.Persistance
                     .HasForeignKey(d => d.IdCompany)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("branch_id_company_fkey");
+            });
+
+            modelBuilder.Entity<PairTracker>(entity =>
+            {
+                entity.HasOne(d => d.Pair1Navigation)
+                    .WithMany(p => p.PairTrackerPair1Navigation)
+                    .HasForeignKey(d => d.Pair1)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("pair_tracker_pair1_fkey");
+
+                entity.HasOne(d => d.Pair2Navigation)
+                    .WithMany(p => p.PairTrackerPair2Navigation)
+                    .HasForeignKey(d => d.Pair2)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("pair_tracker_pair2_fkey");
             });
 
             modelBuilder.Entity<PgBuffercache>(entity =>

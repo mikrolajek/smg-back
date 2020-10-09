@@ -17,12 +17,14 @@ namespace WebApiRedirector.Models
         public int IdCode { get; set; }
         [Column("id_link")]
         public int IdLink { get; set; }
-        [Column("from_date", TypeName = "date")]
+        [Column("from_date")]
         public DateTime FromDate { get; set; }
-        [Column("to_date", TypeName = "date")]
+        [Column("to_date")]
         public DateTime? ToDate { get; set; }
         [Column("id_location")]
         public int IdLocation { get; set; }
+        [Column("id_pair_tracker")]
+        public int? IdPairTracker { get; set; }
 
         [ForeignKey(nameof(IdCode))]
         [InverseProperty(nameof(Code.Group))]
@@ -33,6 +35,9 @@ namespace WebApiRedirector.Models
         [ForeignKey(nameof(IdLocation))]
         [InverseProperty(nameof(Location.Group))]
         public virtual Location IdLocationNavigation { get; set; }
+        [ForeignKey(nameof(IdPairTracker))]
+        [InverseProperty(nameof(PairTracker.Group))]
+        public virtual PairTracker IdPairTrackerNavigation { get; set; }
         [ForeignKey(nameof(IdProduct))]
         [InverseProperty(nameof(Product.Group))]
         public virtual Product IdProductNavigation { get; set; }

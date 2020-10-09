@@ -13,6 +13,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using WebApiRedirector.Persistance;
 using Microsoft.AspNetCore.Mvc.NewtonsoftJson;
+using Microsoft.AspNetCore.Http;
 
 namespace WebApiRedirector
 {
@@ -38,6 +39,7 @@ namespace WebApiRedirector
                         options.UseNpgsql(Configuration.GetConnectionString("DevContext")));
             }
             services.AddControllers().AddNewtonsoftJson();
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             //     services.AddDbContext<ApplicationDbContext>(options =>
             // options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
         }

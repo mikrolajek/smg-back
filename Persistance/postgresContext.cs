@@ -31,7 +31,7 @@ namespace WebApiRedirector.Persistance
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                optionsBuilder.UseNpgsql("Host=sav-redirector-db.postgres.database.azure.com;Database=postgres;Username=savoiradmin@sav-redirector-db;Password='SavGroup9711;';SSL Mode=Prefer;");
+                optionsBuilder.UseNpgsql("Host=samsung-db-redirector.postgres.database.azure.com;Database=postgres;savoiradmin@samsung-db-redirector;Password='SavGroup!128';SSL Mode=Prefer");
             }
         }
 

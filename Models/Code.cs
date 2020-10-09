@@ -11,8 +11,8 @@ namespace WebApiRedirector.Models
         public Code()
         {
             Group = new HashSet<Group>();
-            PairTrackerPair1Navigation = new HashSet<PairTracker>();
-            PairTrackerPair2Navigation = new HashSet<PairTracker>();
+            PairTrackerIdCode1Navigation = new HashSet<PairTracker>();
+            PairTrackerIdCode2Navigation = new HashSet<PairTracker>();
         }
 
         [Key]
@@ -29,9 +29,9 @@ namespace WebApiRedirector.Models
 
         [InverseProperty("IdCodeNavigation")]
         public virtual ICollection<Group> Group { get; set; }
-        [InverseProperty(nameof(PairTracker.Pair1Navigation))]
-        public virtual ICollection<PairTracker> PairTrackerPair1Navigation { get; set; }
-        [InverseProperty(nameof(PairTracker.Pair2Navigation))]
-        public virtual ICollection<PairTracker> PairTrackerPair2Navigation { get; set; }
+        [InverseProperty(nameof(PairTracker.IdCode1Navigation))]
+        public virtual ICollection<PairTracker> PairTrackerIdCode1Navigation { get; set; }
+        [InverseProperty(nameof(PairTracker.IdCode2Navigation))]
+        public virtual ICollection<PairTracker> PairTrackerIdCode2Navigation { get; set; }
     }
 }

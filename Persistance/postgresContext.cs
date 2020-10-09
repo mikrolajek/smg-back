@@ -31,7 +31,7 @@ namespace WebApiRedirector.Persistance
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                optionsBuilder.UseNpgsql("Host=samsung-db-redirector.postgres.database.azure.com;Database=postgres;savoiradmin@samsung-db-redirector;Password='SavGroup!128';SSL Mode=Prefer");
+                optionsBuilder.UseNpgsql("Host=samsung-db-redirector.postgres.database.azure.com;Database=postgres;Username=savoiradmin@samsung-db-redirector;Password='SavGroup!128';SSL Mode=Prefer;");
             }
         }
 
@@ -100,15 +100,15 @@ namespace WebApiRedirector.Persistance
 
             modelBuilder.Entity<PairTracker>(entity =>
             {
-                entity.HasOne(d => d.Pair1Navigation)
-                    .WithMany(p => p.PairTrackerPair1Navigation)
-                    .HasForeignKey(d => d.Pair1)
+                entity.HasOne(d => d.IdCode1Navigation)
+                    .WithMany(p => p.PairTrackerIdCode1Navigation)
+                    .HasForeignKey(d => d.IdCode1)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("pair_tracker_pair1_fkey");
 
-                entity.HasOne(d => d.Pair2Navigation)
-                    .WithMany(p => p.PairTrackerPair2Navigation)
-                    .HasForeignKey(d => d.Pair2)
+                entity.HasOne(d => d.IdCode2Navigation)
+                    .WithMany(p => p.PairTrackerIdCode2Navigation)
+                    .HasForeignKey(d => d.IdCode2)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("pair_tracker_pair2_fkey");
             });

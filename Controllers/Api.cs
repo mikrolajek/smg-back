@@ -160,8 +160,8 @@ namespace WebApiRedirector.Controllers
 
             var pairToAdd = new PairTracker()
             {
-                Pair1 = qrid,
-                Pair2 = nfcid
+                IdCode1 = qrid,
+                IdCode2 = nfcid
             };
             _context.PairTracker.Add(pairToAdd);
             _context.SaveChanges();

@@ -21,6 +21,7 @@ namespace WebApiRedirector.Persistance
         public virtual DbSet<Group> Group { get; set; }
         public virtual DbSet<Link> Link { get; set; }
         public virtual DbSet<Location> Location { get; set; }
+        public virtual DbSet<Log> Log { get; set; }
         public virtual DbSet<PairTracker> PairTracker { get; set; }
         public virtual DbSet<PgBuffercache> PgBuffercache { get; set; }
         public virtual DbSet<PgStatStatements> PgStatStatements { get; set; }
@@ -96,6 +97,19 @@ namespace WebApiRedirector.Persistance
                     .HasForeignKey(d => d.IdCompany)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("branch_id_company_fkey");
+            });
+
+            modelBuilder.Entity<Log>(entity =>
+            {
+                entity.Property(e => e.Id).HasDefaultValueSql("nextval('logs_id_seq'::regclass)");
+
+                entity.Property(e => e.CreatedAt).HasDefaultValueSql("now()");
+
+                entity.HasOne(d => d.IdGroupNavigation)
+                    .WithMany(p => p.Log)
+                    .HasForeignKey(d => d.IdGroup)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("logs_id_group_fkey");
             });
 
             modelBuilder.Entity<PairTracker>(entity =>

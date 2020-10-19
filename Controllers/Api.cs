@@ -34,16 +34,50 @@ namespace WebApiRedirector.Controllers
         [HttpGet("{uqCode?}")]
         public async Task<ActionResult> Get(string uqCode)
         {
+            string phoneType;
+            string acceptLanguage;
+
             var codeInDb = await _context.Code.FirstOrDefaultAsync(c => c.Uid == uqCode);
-            var codeInDbGroup = await _context.Group.Where(gr => gr.IdCodeNavigation.Uid == uqCode).Select(gr => gr.IdLinkNavigation.Url).FirstOrDefaultAsync();
+            var groupWithCode = _context.Group.Where(gr => gr.IdCodeNavigation.Uid == uqCode);
+            var codeInDbGroup = await groupWithCode.Select(gr => gr.IdLinkNavigation.Url).FirstOrDefaultAsync();
             if (!(codeInDbGroup is null))
             {
-                return Redirect(codeInDbGroup);
+                var ip = _accessor.HttpContext.Connection.RemoteIpAddress.ToString();
+                var headers = _accessor.HttpContext.Request.Headers;
+                var userAgent = _accessor.HttpContext.Request.Headers["User-Agent"];
+                var userAgentString = JsonConvert.SerializeObject(headers);
+                acceptLanguage = _accessor.HttpContext.Request.Headers["Accept-language"].ToString();
+                var isIphone = userAgentString.ToLower().Contains("iphone");
+                var isAndroid = userAgentString.ToLower().Contains("android");
 
+                phoneType = isIphone ? "iphone" : isAndroid ? "android" : "unknown";
+
+                var logDto = new LogDto()
+                {
+                    DeviceType = phoneType,
+                    Ip = ip,
+                    UserAgent = userAgent,
+                    AcceptLanguage = acceptLanguage,
+                    IdGroup = groupWithCode.Select(gr => gr.Id).FirstOrDefault()
+                };
+
+                var logToSave = new Log()
+                {
+                    Ip = logDto.Ip,
+                    DeviceType = logDto.DeviceType,
+                    UserAgent = logDto.UserAgent,
+                    AcceptLanguage = logDto.AcceptLanguage,
+                    IdGroup = logDto.IdGroup
+                };
+
+                _context.Log.Add(logToSave);
+                await _context.SaveChangesAsync();
+                // groupWithCode.Select(g => g.)
+                return Redirect(codeInDbGroup);
             }
 
-            return Content($"Nie ma takiego zasobu :ACCESSOR {_accessor.HttpContext.Connection.RemoteIpAddress}, Z PALCA{Request.HttpContext.Connection.RemoteIpAddress}");
-
+            // return Content(phoneType);
+            return Content($"Nie ma takiego zasobu :ACCESSOR {_accessor.HttpContext.Connection.RemoteIpAddress}");
         }
 
         [HttpPost("/add/sheet/{haslo}")]

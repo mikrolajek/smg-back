@@ -8,6 +8,11 @@ namespace WebApiRedirector.Models
     [Table("group")]
     public partial class Group
     {
+        public Group()
+        {
+            Log = new HashSet<Log>();
+        }
+
         [Key]
         [Column("id")]
         public int Id { get; set; }
@@ -41,5 +46,7 @@ namespace WebApiRedirector.Models
         [ForeignKey(nameof(IdProduct))]
         [InverseProperty(nameof(Product.Group))]
         public virtual Product IdProductNavigation { get; set; }
+        [InverseProperty("IdGroupNavigation")]
+        public virtual ICollection<Log> Log { get; set; }
     }
 }
